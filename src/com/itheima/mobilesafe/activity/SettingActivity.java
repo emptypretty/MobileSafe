@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.service.AddressService;
+import com.itheima.mobilesafe.service.BlackNumberService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.PrefUtils;
 import com.itheima.mobilesafe.utils.ServiceUtil;
@@ -23,6 +24,7 @@ public class SettingActivity extends Activity {
 	private int mToastStyle;
 	private SettingClickView scv_toast_style;
 	private SettingClickView scv_location;
+	private SettingItemView siv_blacknumber;
 
 	/*
 	 * (non-Javadoc)
@@ -42,6 +44,42 @@ public class SettingActivity extends Activity {
 		initToastStyle();
 
 		initLocation();
+
+		initBlackNumber();
+	}
+
+	/**
+	 * 拦截黑名单短信号码
+	 */
+	private void initBlackNumber() {
+		// TODO Auto-generated method stub
+
+		siv_blacknumber = (SettingItemView) findViewById(R.id.siv_blacknumber);
+
+		boolean isRunning = ServiceUtil.isRunning(getApplicationContext(),
+				"com.itheima.mobilesafe.service.BlackNumberService");
+
+		siv_blacknumber.setCheck(isRunning);
+
+		siv_blacknumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				boolean isCheck = siv_blacknumber.isCheck();
+				siv_blacknumber.setCheck(!isCheck);
+
+				if (!isCheck) {
+					// 开启服务
+					startService(new Intent(getApplicationContext(),
+							BlackNumberService.class));
+				} else {
+					// 关闭服务
+					stopService(new Intent(getApplicationContext(),
+							BlackNumberService.class));
+				}
+			}
+		});
 	}
 
 	/**

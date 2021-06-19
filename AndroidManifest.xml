@@ -13,6 +13,11 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
+    
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.itheima.mobilesafe" />
+    
 	<!-- android:theme="@android:style/Theme.Light.NoTitleBar" -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -23,6 +28,12 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <!-- 在窗体上挂在view的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
     
    
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -34,6 +45,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <uses-library android:name="android.test.runner" />
         <activity
             android:name="com.itheima.mobilesafe.activity.SplashActivity"
             android:label="@string/app_name" >
@@ -57,6 +69,8 @@
         <activity android:name="com.itheima.mobilesafe.activity.ToastLocationActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         
+        <activity android:name="com.itheima.mobilesafe.activity.BlackNumberActivity"/>
+        
         <receiver 
             android:name="com.itheima.mobilesafe.receiver.BootReceiver">
             <intent-filter>
@@ -73,7 +87,7 @@
         
         <service android:name="com.itheima.mobilesafe.service.LocationService"/>
         <service android:name="com.itheima.mobilesafe.service.AddressService"/>
-        
+        <service android:name="com.itheima.mobilesafe.service.BlackNumberService"/>
     </application>
 
 </manifest>
