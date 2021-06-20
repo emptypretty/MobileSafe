@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true"
+          android:drawable="@drawable/main_clean_icon_pressed" /> <!--按下去的图片显示效果 -->
+    <item android:drawable="@drawable/main_clean_icon" /> <!-- 没有任何状态下的默认图片 -->
+</selector>

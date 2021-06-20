@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -108,6 +109,38 @@ public class SplashActivity extends Activity {
 
 		// 初始化数据库
 		initDB();
+
+		boolean has_short_cut = PrefUtils.getBoolean(this,
+				ConstantValue.HAS_SHORT_CUT, false);
+		if (!has_short_cut) {
+			// 是否生成快捷方式的方法
+			initShortCut();
+		}
+	}
+
+	private void initShortCut() {
+		// 快捷方式只生成一个
+		// 图片
+		// 文字
+		// 点击此快捷方式开启的意图
+
+		// 生成快捷方式,其实就是去发送一条广播,上诉的内容,都可以封装到广播的intent中,权限
+		Intent intent = new Intent(
+				"com.android.launcher.action.INSTALL_SHORTCUT");
+		// 第二个参数,将资源文件中的一张图片装换成Bitmap,作为数据在发送广播的过程中传递出去
+		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory
+				.decodeResource(getResources(), R.drawable.ic_launcher));
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "黑马卫士");
+
+		// 点开快捷方式的意图
+		Intent shortCutIntent = new Intent();
+		shortCutIntent.setAction("com.itheima.mobilesafe");
+		shortCutIntent.addCategory("android.intent.category.DEFAULT");
+
+		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortCutIntent);
+		sendBroadcast(intent);
+
+		PrefUtils.putBoolean(this, ConstantValue.HAS_SHORT_CUT, true);
 	}
 
 	private void initDB() {

@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.xmlpull.v1.XmlSerializer;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,7 +17,7 @@ public class SmsBackUp {
 
 	private static int index = 0;
 
-	public static void backup(Context ctx, String path, ProgressDialog pd) {
+	public static void backup(Context ctx, String path, CallBack callBack) {
 		FileOutputStream fos = null;
 		Cursor cursor = null;
 		try {
@@ -44,7 +43,11 @@ public class SmsBackUp {
 			newSerializer.startTag(null, "smss");
 
 			// 6.备份短息总数指定
-			pd.setMax(cursor.getCount());
+			// pd.setMax(cursor.getCount());
+
+			if (callBack != null) {
+				callBack.setMax(cursor.getCount());
+			}
 
 			// 7.读取数据库中的每一行数据写入到xml中
 
@@ -74,7 +77,11 @@ public class SmsBackUp {
 
 				Thread.sleep(500);
 				// progressDialog可以在子线程中更新相应的进度条的改变
-				pd.setProgress(index);
+				// pd.setProgress(index);
+				if (callBack != null) {
+					callBack.setProgress(index);
+				}
+
 			}
 			newSerializer.endTag(null, "smss");
 			newSerializer.endDocument();
@@ -95,5 +102,13 @@ public class SmsBackUp {
 			}
 		}
 
+	}
+
+	public interface CallBack {
+		// 短息总数设置为实现方法（由自己决定是用对话框，setMax(max)，还是用进度条 setMax(max)）
+		public void setMax(int max);
+
+		// 备份过程中短息百分比更新（由自己决定是用对话框，setProgress(index)，还是用进度条 setProgress(index)）
+		public void setProgress(int index);
 	}
 }

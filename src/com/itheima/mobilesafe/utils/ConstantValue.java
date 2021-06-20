@@ -56,4 +56,6 @@ public class ConstantValue {
 	/**
 	 * 是否已经有快捷方式key
 	 */
+
+	public static final String HAS_SHORT_CUT = "has_short_cut";
 }

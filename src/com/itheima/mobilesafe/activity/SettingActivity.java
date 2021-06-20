@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.service.AddressService;
 import com.itheima.mobilesafe.service.BlackNumberService;
+import com.itheima.mobilesafe.service.WatchDogService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.PrefUtils;
 import com.itheima.mobilesafe.utils.ServiceUtil;
@@ -25,6 +26,7 @@ public class SettingActivity extends Activity {
 	private SettingClickView scv_toast_style;
 	private SettingClickView scv_location;
 	private SettingItemView siv_blacknumber;
+	private SettingItemView siv_app_lock;
 
 	/*
 	 * (non-Javadoc)
@@ -46,6 +48,38 @@ public class SettingActivity extends Activity {
 		initLocation();
 
 		initBlackNumber();
+
+		// 初始化程序锁的方法
+		initAppLock();
+	}
+
+	private void initAppLock() {
+		siv_app_lock = (SettingItemView) findViewById(R.id.siv_app_lock);
+		// 1,让是否选中此开关相应的状态和服务是否运行相互绑定
+		// 2,判断服务是否正在运行(服务类的全路径,看门狗服务)
+		boolean isRunning = ServiceUtil.isRunning(getApplicationContext(),
+				"com.itheima.mobilesafe.service.WatchDogService");
+		// 3,根据服务开启的状态,去判断此条目是否勾选上
+		siv_app_lock.setCheck(isRunning);
+
+		// 4,开启关闭服务点击事件
+		siv_app_lock.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean check = siv_app_lock.isCheck();
+				siv_app_lock.setCheck(!check);
+				// 5,服务的开启关闭
+				if (!check) {
+					// 开启
+					startService(new Intent(getApplicationContext(),
+							WatchDogService.class));
+				} else {
+					// 关闭
+					stopService(new Intent(getApplicationContext(),
+							WatchDogService.class));
+				}
+			}
+		});
 	}
 
 	/**

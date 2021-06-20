@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.engine.SmsBackUp;
+import com.itheima.mobilesafe.engine.SmsBackUp.CallBack;
 
 public class AToolActivity extends Activity {
 
@@ -27,7 +28,38 @@ public class AToolActivity extends Activity {
 		// 电话归属地查询方法
 		initPhoneAddress();
 
+		// 备份短信
 		initSmsBackUp();
+
+		// 开启常用号码的方法
+		initCommonNumber();
+
+		// 程序锁
+		initAppLock();
+	}
+
+	private void initAppLock() {
+		TextView tv_applock = (TextView) findViewById(R.id.tv_applock);
+		tv_applock.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(),
+						AppLockActivity.class));
+			}
+		});
+	}
+
+	private void initCommonNumber() {
+		TextView tv_common_number_query = (TextView) findViewById(R.id.tv_common_number_query);
+		tv_common_number_query.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				startActivity(new Intent(getApplicationContext(),
+						CommonNumberActivity.class));
+
+			}
+		});
 	}
 
 	private void initSmsBackUp() {
@@ -63,7 +95,20 @@ public class AToolActivity extends Activity {
 				// 获取sd卡路径
 				String path = Environment.getExternalStorageDirectory()
 						.getAbsolutePath() + File.separator + "sms74.xml";
-				SmsBackUp.backup(getApplicationContext(), path, progressDialog);
+				SmsBackUp.backup(getApplicationContext(), path, new CallBack() {
+
+					@Override
+					public void setProgress(int index) {
+						// TODO Auto-generated method stub
+						progressDialog.setProgress(index);
+					}
+
+					@Override
+					public void setMax(int max) {
+						// TODO Auto-generated method stub
+						progressDialog.setMax(max);
+					}
+				});
 				progressDialog.dismiss();
 			};
 		}.start();

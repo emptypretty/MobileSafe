@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 把手控件的id,在SlidingDrawer上去做指定,android:handle="@+id/handle" -->
+<!-- 抽屉内容的id,在SlidingDrawer上去做指定,android:content="@+id/content" -->
+<!-- <LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:background="#0f0"
+        android:layout_width="match_parent"
+    	android:layout_height="100dp">
+    </View> -->
+   <!--  android-supprot-v4	DrawerLayout
+    android-supprot-v7	DrawerLayout	动画效果	谷歌市场
+     android-supprot-v13 -->
+    <!-- slidingMenu库文件	jar -->
+     
+	<SlidingDrawer	xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal" 
+	    android:handle="@+id/handle"
+	    android:content="@+id/content">
+	    <!-- 把手控件 -->
+	    <ImageView 
+	        android:id="@id/handle"
+	        android:background="@drawable/ic_launcher"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
+	    <!-- 抽屉内容控件 -->
+		<LinearLayout 
+		    android:id="@id/content"
+		    android:background="#f00"
+		    android:layout_width="match_parent"
+	        android:layout_height="match_parent">
+		</LinearLayout>
+	</SlidingDrawer>
+<!-- </LinearLayout> -->
